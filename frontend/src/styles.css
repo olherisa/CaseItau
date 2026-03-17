@@ -1,0 +1,12 @@
+html, body {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Inter', sans-serif;
+    background: #1c1c28;
+    color: #e2e2e2;
+}
+
+*, *:before, *:after {
+    box-sizing: inherit;
+}

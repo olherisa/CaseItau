@@ -1,0 +1,95 @@
+<div class="game-container">
+    <nav class="navbar">
+        <div class="brand">MASTERMIND</div>
+        <button class="btn btn-outline" (click)="goBack()">Voltar ao Dashboard</button>
+    </nav>
+
+    <div class="game-wrapper" *if="!isLoading || history.length > 0">
+        
+        <div class="game-board">
+            <h2>Tabuleiro <span class="badge">{{ history.length }} / {{ maxAttempts }}</span></h2>
+            
+            <div *if="error" class="alert alert-danger">{{ error }}</div>
+
+            <!-- Board History -->
+            <div class="history-list">
+                <div class="history-row" *ngFor="let attempt of history; let i = index">
+                    <span class="row-num">{{ i + 1 }}</span>
+                    
+                    <div class="holes">
+                        <div class="hole filled" *ngFor="let c of attempt.guess"
+                             [style.backgroundColor]="getColorHex(c)"></div>
+                    </div>
+
+                    <div class="feedback-pegs">
+                        <!-- Exact matches -->
+                        <div class="peg peg-exact" *ngFor="let _ of [].constructor(attempt.exact_matches)"></div>
+                        <!-- Partial matches -->
+                        <div class="peg peg-partial" *ngFor="let _ of [].constructor(attempt.partial_matches)"></div>
+                        <!-- Empty feedback slots -->
+                        <div class="peg peg-empty" 
+                             *ngFor="let _ of [].constructor(4 - attempt.exact_matches - attempt.partial_matches)"></div>
+                    </div>
+                </div>
+
+                <div class="empty-state" *if="history.length === 0">
+                    Nenhum palpite ainda. Sorteio de 4 cores secretas.
+                </div>
+            </div>
+
+            <!-- Current Guess Controls -->
+            <div class="controls-section" *if="!isGameOver">
+                <hr>
+                <h3>Seu Palpite Atual:</h3>
+                
+                <div class="current-guess-row">
+                    <!-- Dropdown/buttons for each of the 4 positions -->
+                    <div class="guess-slot" *ngFor="let guess of currentGuess; let i = index"
+                         [style.backgroundColor]="getColorHex(guess)"
+                         [class.unselected]="!guess">
+                        <div class="color-picker-tooltip">
+                            <div class="color-opt" *ngFor="let color of availableColors"
+                                 [style.backgroundColor]="getColorHex(color)"
+                                 (click)="selectColor(color, i)"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="action-row">
+                    <button class="btn btn-primary btn-submit" 
+                            [disabled]="!isGuessComplete() || isLoading"
+                            (click)="submitGuess()">
+                        CONFIRMAR PALPITE
+                    </button>
+                </div>
+            </div>
+
+            <!-- Game Over Status -->
+            <div class="game-over-section" *if="isGameOver">
+                <hr>
+                <div class="result-banner" [ngClass]="isWinner ? 'winner' : 'loser'">
+                    <h2>{{ isWinner ? 'VOCÊ VENCEU!' : 'FIM DE JOGO' }}</h2>
+                    <p *if="score !== null">Pontuação Final: {{ score }} pts</p>
+                    
+                    <div class="secret-reveal mt-3">
+                        <p>A senha correta era:</p>
+                        <div class="holes justify-center mt-2">
+                            <div class="hole filled reveal-anim" *ngFor="let sc of secretCode"
+                                 [style.backgroundColor]="getColorHex(sc)"></div>
+                        </div>
+                    </div>
+                </div>
+                
+                <button class="btn btn-primary btn-block mt-4" (click)="goBack()">Voltar</button>
+            </div>
+            
+        </div>
+        
+    </div>
+
+    <!-- Global Loading Spinner -->
+    <div class="loading-overlay" *if="isLoading && history.length === 0">
+        <div class="spinner"></div>
+        <p>Carregando Tabuleiro...</p>
+    </div>
+</div>

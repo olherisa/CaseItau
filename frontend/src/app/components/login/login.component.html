@@ -1,0 +1,60 @@
+<div class="login-container">
+    <div class="login-card">
+        <h2 class="title">{{ isRegistering ? 'Criar Conta' : 'Acesso Mastermind' }}</h2>
+        <p class="subtitle">{{ isRegistering ? 'Seja bem-vindo novato' : 'Jogue e suba no ranking' }}</p>
+
+        <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+            
+            <ng-container *if="!isRegistering">
+                <div class="form-group">
+                    <label for="username_or_email">Usuário ou Email</label>
+                    <input type="text" formControlName="username_or_email" class="form-control" [ngClass]="{ 'is-invalid': submitted && f['username_or_email'].errors }" />
+                    <div *if="submitted && f['username_or_email'].errors" class="invalid-feedback">
+                        <div *if="f['username_or_email'].errors['required']">Usuário/Email é obrigatório</div>
+                    </div>
+                </div>
+            </ng-container>
+
+            <ng-container *if="isRegistering">
+                <div class="form-group">
+                    <label for="username">Usuário</label>
+                    <input type="text" formControlName="username" class="form-control" [ngClass]="{ 'is-invalid': submitted && f['username'].errors }" />
+                    <div *if="submitted && f['username'].errors" class="invalid-feedback">
+                        <div *if="f['username'].errors['required']">Nome de usuário é obrigatório</div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="email">Email</label>
+                    <input type="email" formControlName="email" class="form-control" [ngClass]="{ 'is-invalid': submitted && f['email'].errors }" />
+                    <div *if="submitted && f['email'].errors" class="invalid-feedback">
+                        <div *if="f['email'].errors['required']">Email é obrigatório</div>
+                        <div *if="f['email'].errors['email']">Email inválido</div>
+                    </div>
+                </div>
+            </ng-container>
+
+            <div class="form-group">
+                <label for="password">Senha</label>
+                <input type="password" formControlName="password" class="form-control" [ngClass]="{ 'is-invalid': submitted && f['password'].errors }" />
+                <div *if="submitted && f['password'].errors" class="invalid-feedback">
+                    <div *if="f['password'].errors['required']">Senha é obrigatória</div>
+                    <div *if="f['password'].errors['minlength']">Mínimo de 6 caracteres</div>
+                </div>
+            </div>
+
+            <div *if="errorMessage" class="alert alert-danger mt-3">
+                {{ errorMessage }}
+            </div>
+
+            <div class="form-actions">
+                <button [disabled]="loading" class="btn btn-primary btn-block">
+                    <span *if="loading" class="spinner-border spinner-border-sm mr-1"></span>
+                    {{ isRegistering ? 'Registrar' : 'Entrar' }}
+                </button>
+                <a href="javascript:void(0)" (click)="toggleMode()" class="toggle-link">
+                    {{ isRegistering ? 'Já tem uma conta? Faça Login' : 'Não tem conta? Registre-se' }}
+                </a>
+            </div>
+        </form>
+    </div>
+</div>

@@ -1,0 +1,47 @@
+<div class="ranking-container">
+    <nav class="navbar">
+        <div class="brand">MASTERMIND</div>
+        <button class="btn btn-outline" (click)="goBack()">Voltar ao Dashboard</button>
+    </nav>
+
+    <div class="content">
+        <div class="card ranking-card">
+            <h1 class="heading">🏆 Ranking Global</h1>
+            <p class="description">Os melhores jogadores classificados por pontuação</p>
+
+            <div *if="error" class="alert alert-danger">{{ error }}</div>
+
+            <div class="table-responsive" *if="!isLoading && ranking.length > 0">
+                <table class="ranking-table">
+                    <thead>
+                        <tr>
+                            <th>Posição</th>
+                            <th>Jogador</th>
+                            <th>Maior Pontuação</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let user of ranking; let i = index" 
+                            [class.top-1]="i === 0"
+                            [class.top-2]="i === 1"
+                            [class.top-3]="i === 2">
+                            <td>
+                                <span class="rank-badge">{{ i + 1 }}</span>
+                            </td>
+                            <td class="player-name">{{ user.username }}</td>
+                            <td class="score">{{ user.best_score }} pts</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="empty-state" *if="!isLoading && ranking.length === 0 && !error">
+                Nenhuma pontuação registrada ainda. Seja o primeiro a entrar no ranking!
+            </div>
+            
+            <div class="loading-state" *if="isLoading">
+                <div class="spinner"></div> Carregando...
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,50 @@
+from fastapi.testclient import TestClient
+from tests.conftest import client
+
+def test_register_user():
+    response = client.post(
+        "/auth/register",
+        json={"username": "testuser", "email": "test@example.com", "password": "password123"}
+    )
+    assert response.status_code == 201
+    data = response.json()
+    assert data["username"] == "testuser"
+    assert "id" in data
+
+def test_login_user():
+    # Register first
+    client.post(
+        "/auth/register",
+        json={"username": "testuser2", "email": "test2@example.com", "password": "password123"}
+    )
+    # Login
+    response = client.post(
+        "/auth/login",
+        json={"username_or_email": "testuser2", "password": "password123"}
+    )
+    assert response.status_code == 200
+    data = response.json()
+    assert "access_token" in data
+
+def test_start_game():
+    client.post("/auth/register", json={"username": "player1", "email": "player1@mail.com", "password": "pass"})
+    login_res = client.post("/auth/login", json={"username_or_email": "player1", "password": "pass"})
+    token = login_res.json()["access_token"]
+
+    res = client.post("/games/start", headers={"Authorization": f"Bearer {token}"})
+    assert res.status_code == 201
+    assert "game_id" in res.json()
+
+def test_make_guess():
+    client.post("/auth/register", json={"username": "player2", "email": "player2@mail.com", "password": "pass"})
+    token = client.post("/auth/login", json={"username_or_email": "player2", "password": "pass"}).json()["access_token"]
+    headers = {"Authorization": f"Bearer {token}"}
+    
+    game = client.post("/games/start", headers=headers).json()
+    game_id = game["game_id"]
+
+    guess_res = client.post(f"/games/{game_id}/guess", json={"guess": ["R", "R", "G", "B"]}, headers=headers)
+    assert guess_res.status_code == 200
+    data = guess_res.json()
+    assert "exact_matches" in data
+    assert "partial_matches" in data

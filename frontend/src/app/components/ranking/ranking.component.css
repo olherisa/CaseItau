@@ -1,0 +1,188 @@
+.ranking-container {
+    min-height: 100vh;
+    background: #1c1c28;
+    color: #e2e2e2;
+    font-family: 'Inter', sans-serif;
+    padding-bottom: 3rem;
+}
+
+.navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1.25rem 2rem;
+    background: rgba(42, 42, 53, 0.8);
+    backdrop-filter: blur(10px);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.brand {
+    font-size: 1.5rem;
+    font-weight: 800;
+    color: #fff;
+    letter-spacing: 2px;
+    background: linear-gradient(135deg, #6c5ce7 0%, #81ecec 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.content {
+    display: flex;
+    justify-content: center;
+    padding: 3rem 2rem;
+}
+
+.card {
+    background: rgba(42, 42, 53, 0.5);
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    border-radius: 20px;
+    padding: 2.5rem;
+    max-width: 800px;
+    width: 100%;
+    box-shadow: 0 20px 40px rgba(0,0,0,0.3);
+    animation: fadeIn 0.5s ease;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(15px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.heading {
+    text-align: center;
+    font-size: 2.2rem;
+    color: #fff;
+    margin-bottom: 0.5rem;
+}
+
+.description {
+    text-align: center;
+    color: #a0a0b0;
+    margin-bottom: 2.5rem;
+}
+
+.table-responsive {
+    overflow-x: auto;
+}
+
+.ranking-table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0 0.8rem;
+}
+
+.ranking-table th {
+    text-align: left;
+    padding: 0.5rem 1.5rem;
+    color: #a29bfe;
+    font-weight: 600;
+    text-transform: uppercase;
+    font-size: 0.85rem;
+    letter-spacing: 1px;
+}
+
+.ranking-table td {
+    padding: 1.2rem 1.5rem;
+    background: rgba(0,0,0,0.2);
+    border: 1px solid rgba(255,255,255,0.02);
+}
+
+.ranking-table td:first-child { border-radius: 12px 0 0 12px; }
+.ranking-table td:last-child { border-radius: 0 12px 12px 0; }
+
+.rank-badge {
+    background: rgba(255,255,255,0.1);
+    color: #fff;
+    width: 30px;
+    height: 30px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    font-weight: bold;
+}
+
+.top-1 td {
+    background: linear-gradient(90deg, rgba(255, 215, 0, 0.15) 0%, rgba(0,0,0,0.2) 100%);
+    border-color: rgba(255, 215, 0, 0.3);
+}
+.top-1 .rank-badge {
+    background: #ffd700;
+    color: #000;
+    box-shadow: 0 0 10px rgba(255, 215, 0, 0.5);
+}
+
+.top-2 td {
+    background: linear-gradient(90deg, rgba(192, 192, 192, 0.1) 0%, rgba(0,0,0,0.2) 100%);
+    border-color: rgba(192, 192, 192, 0.2);
+}
+.top-2 .rank-badge {
+    background: #c0c0c0;
+    color: #000;
+}
+
+.top-3 td {
+    background: linear-gradient(90deg, rgba(205, 127, 50, 0.1) 0%, rgba(0,0,0,0.2) 100%);
+    border-color: rgba(205, 127, 50, 0.2);
+}
+.top-3 .rank-badge {
+    background: #cd7f32;
+    color: #fff;
+}
+
+.player-name {
+    font-size: 1.1rem;
+    font-weight: 500;
+    color: #fff;
+}
+
+.score {
+    font-weight: 700;
+    color: #2ed573;
+    font-size: 1.1rem;
+}
+
+.btn-outline {
+    background: transparent;
+    color: #a0a0b0;
+    border: 1px solid #a0a0b0;
+    padding: 0.5rem 1rem;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.3s;
+}
+
+.btn-outline:hover {
+    color: #fff;
+    border-color: #fff;
+}
+
+.empty-state {
+    text-align: center;
+    padding: 3rem;
+    color: #a0a0b0;
+    background: rgba(0,0,0,0.2);
+    border-radius: 12px;
+}
+
+.loading-state {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 3rem;
+    gap: 1rem;
+    color: #a0a0b0;
+}
+
+.spinner {
+    width: 24px;
+    height: 24px;
+    border: 3px solid rgba(108, 92, 231, 0.3);
+    border-top-color: #81ecec;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin { 
+    to { transform: rotate(360deg); } 
+}

@@ -1,0 +1,34 @@
+<div class="dashboard-container">
+    <nav class="navbar">
+        <div class="brand">MASTERMIND</div>
+        <div class="user-menu">
+            <span class="welcome-text">Olá, {{ username }}</span>
+            <button class="btn btn-outline" (click)="logout()">Sair</button>
+        </div>
+    </nav>
+
+    <div class="content">
+        <div class="card main-card">
+            <h1 class="heading">Bem-vindo ao Jogo</h1>
+            <p class="description">
+                Um código secreto de 4 cores foi gerado. Você tem 10 tentativas para
+                adivinhar a sequência exata. Teste sua lógica e suba no ranking mundial!
+            </p>
+
+            <div *if="error" class="alert alert-danger">
+                {{ error }}
+            </div>
+
+            <div class="actions">
+                <button class="btn btn-primary btn-large" (click)="startNewGame()" [disabled]="isLoading">
+                    <span *if="isLoading" class="spinner-border spinner-border-sm mr-2"></span>
+                    {{ isLoading ? 'Iniciando...' : 'NOVA PARTIDA' }}
+                </button>
+
+                <button class="btn btn-secondary btn-large mt-3" (click)="goToRanking()">
+                    VER RANKING
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
