@@ -25,9 +25,31 @@ O Frontend está desenhado usando os pilares do Angular: serviços reutilizávei
 
 ## 💻 Instruções para Executar Localmente
 
-Siga o passo a passo para rodar o banco de dados, o backend e o frontend simultaneamente.
+Você tem duas opções para rodar a aplicação: **via Docker Compose (Recomendado e mais fácil)** ou **manualmente**.
 
-### 1. Preparando o Banco de Dados MariaDB
+### Opção 1: Rodando com Docker Compose 🐳 (Recomendado)
+
+Se você possui o [Docker](https://docs.docker.com/get-docker/) instalado, basta inicializar todo o ecossistema (banco, backend e frontend) com um único comando!
+
+1. Abra o terminal na pasta raiz do projeto (`CaseItau`).
+2. Execute o comando:
+   ```bash
+   docker-compose up --build -d
+   ```
+3. Aguarde o download das imagens e a compilação paralela.
+4. Acesse os serviços:
+   - **Frontend (O Jogo):** [http://localhost:4200](http://localhost:4200)
+   - **Backend API Docs:** [http://localhost:8000/docs](http://localhost:8000/docs)
+
+> 💡 *Para parar e remover os containers:* `docker-compose down`
+
+---
+
+### Opção 2: Iniciando Manualmente (Sem Docker)
+
+Siga o passo a passo para rodar o banco de dados, o backend e o frontend simultaneamente de forma local.
+
+#### 1. Preparando o Banco de Dados MariaDB
 Certifique-se de ter um MariaDB rodando. Crie um schema principal chamado `mastermind`:
 ```sql
 CREATE DATABASE mastermind CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
