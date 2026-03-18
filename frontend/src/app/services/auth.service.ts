@@ -3,7 +3,6 @@ import { HttpClient } from '@angular/common/http';
 import { environment } from '../../environments/environment';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
-import { jwtDecode } from 'jwt-decode';
 
 @Injectable({
   providedIn: 'root'
@@ -14,8 +13,16 @@ export class AuthService {
   public currentUser: Observable<any>;
 
   constructor(private http: HttpClient) {
-    this.currentUserSubject = new BehaviorSubject<any>(this.getDecodedToken());
+    this.currentUserSubject = new BehaviorSubject<any>(null);
     this.currentUser = this.currentUserSubject.asObservable();
+    this.checkSession();
+  }
+
+  private checkSession() {
+      this.http.get<any>(`${this.apiUrl}/me`).subscribe({
+          next: (user) => this.currentUserSubject.next(user),
+          error: () => this.currentUserSubject.next(null)
+      });
   }
 
   public get currentUserValue(): any {
@@ -23,41 +30,13 @@ export class AuthService {
   }
 
   isLoggedIn(): boolean {
-    const token = this.getToken();
-    if (!token) return false;
-    
-    // Check expiration
-    const decoded: any = jwtDecode(token);
-    const isExpired = decoded.exp < (Date.now() / 1000);
-    if (isExpired) {
-        this.logout();
-        return false;
-    }
-    return true;
-  }
-
-  getToken(): string | null {
-    return localStorage.getItem('access_token');
-  }
-
-  getDecodedToken(): any {
-      const token = this.getToken();
-      if(token) {
-          try {
-             return jwtDecode(token);
-          } catch(e) {
-              return null;
-          }
-      }
-      return null;
+    return this.currentUserValue !== null;
   }
 
   login(username_or_email: string, password: string): Observable<any> {
     return this.http.post<any>(`${this.apiUrl}/login`, { username_or_email, password })
       .pipe(map(response => {
-        // store jwt token in local storage to keep user logged in between page refreshes
-        localStorage.setItem('access_token', response.access_token);
-        this.currentUserSubject.next(jwtDecode(response.access_token));
+        this.currentUserSubject.next({ user_id: response.user_id, username: response.username });
         return response;
       }));
   }
@@ -67,8 +46,9 @@ export class AuthService {
   }
 
   logout() {
-    // remove user from local storage to log user out
-    localStorage.removeItem('access_token');
-    this.currentUserSubject.next(null);
+    this.http.post(`${this.apiUrl}/logout`, {}).subscribe({
+        next: () => this.currentUserSubject.next(null),
+        error: () => this.currentUserSubject.next(null)
+    });
   }
 }

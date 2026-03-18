@@ -8,15 +8,10 @@ export class JwtInterceptor implements HttpInterceptor {
   constructor(private authService: AuthService) {}
 
   intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
-    // add authorization header with jwt token if available
-    const token = this.authService.getToken();
-    if (token) {
-        request = request.clone({
-            setHeaders: {
-                Authorization: `Bearer ${token}`
-            }
-        });
-    }
+    // With HttpOnly cookies, we just need to send credentials automatically
+    request = request.clone({
+        withCredentials: true
+    });
 
     return next.handle(request);
   }

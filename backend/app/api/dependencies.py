@@ -7,13 +7,13 @@ from app.core.database import get_db
 from app.repositories.user_repository import UserRepository
 from app.models.user import User
 
-security = HTTPBearer()
+from fastapi import Request
 
 def get_current_user(
-    credentials: HTTPAuthorizationCredentials = Depends(security),
+    request: Request,
     db: Session = Depends(get_db)
 ) -> User:
-    token = credentials.credentials
+    token = request.cookies.get("access_token")
     payload = decode_access_token(token)
     
     if not payload or "user_id" not in payload:

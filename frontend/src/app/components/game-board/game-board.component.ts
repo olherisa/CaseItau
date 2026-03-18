@@ -22,7 +22,7 @@ export class GameBoardComponent implements OnInit {
       'P': '#9b59b6'  // Purple
   };
 
-  currentGuess: string[] = [null, null, null, null];
+  currentGuess: (string | null)[] = [null, null, null, null];
   
   history: any[] = [];
   isGameOver = false;
@@ -76,7 +76,7 @@ export class GameBoardComponent implements OnInit {
       this.currentGuess[index] = color;
   }
   
-  getColorHex(colorCode: string): string {
+  getColorHex(colorCode: string | null | undefined): string {
       return colorCode ? this.colorMap[colorCode] : 'transparent';
   }
 
@@ -90,7 +90,7 @@ export class GameBoardComponent implements OnInit {
       this.isLoading = true;
       this.error = '';
 
-      this.gameService.makeGuess(this.gameId, this.currentGuess).subscribe({
+      this.gameService.makeGuess(this.gameId, this.currentGuess as string[]).subscribe({
           next: (res) => {
               // Optionally reload full state or append locally
               // We'll reload to ensure we are in sync with backend

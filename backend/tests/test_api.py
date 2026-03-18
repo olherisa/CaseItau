@@ -23,27 +23,26 @@ def test_login_user():
         json={"username_or_email": "testuser2", "password": "password123"}
     )
     assert response.status_code == 200
-    data = response.json()
-    assert "access_token" in data
+    assert "access_token" in response.cookies
 
 def test_start_game():
     client.post("/auth/register", json={"username": "player1", "email": "player1@mail.com", "password": "pass"})
     login_res = client.post("/auth/login", json={"username_or_email": "player1", "password": "pass"})
-    token = login_res.json()["access_token"]
+    token = login_res.cookies.get("access_token")
 
-    res = client.post("/games/start", headers={"Authorization": f"Bearer {token}"})
+    res = client.post("/games/start", cookies={"access_token": token})
     assert res.status_code == 201
     assert "game_id" in res.json()
 
 def test_make_guess():
     client.post("/auth/register", json={"username": "player2", "email": "player2@mail.com", "password": "pass"})
-    token = client.post("/auth/login", json={"username_or_email": "player2", "password": "pass"}).json()["access_token"]
-    headers = {"Authorization": f"Bearer {token}"}
+    token = client.post("/auth/login", json={"username_or_email": "player2", "password": "pass"}).cookies.get("access_token")
+    cookies = {"access_token": token}
     
-    game = client.post("/games/start", headers=headers).json()
+    game = client.post("/games/start", cookies=cookies).json()
     game_id = game["game_id"]
 
-    guess_res = client.post(f"/games/{game_id}/guess", json={"guess": ["R", "R", "G", "B"]}, headers=headers)
+    guess_res = client.post(f"/games/{game_id}/guess", json={"guess": ["R", "R", "G", "B"]}, cookies=cookies)
     assert guess_res.status_code == 200
     data = guess_res.json()
     assert "exact_matches" in data

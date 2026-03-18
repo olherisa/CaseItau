@@ -4,12 +4,12 @@
         <button class="btn btn-outline" (click)="goBack()">Voltar ao Dashboard</button>
     </nav>
 
-    <div class="game-wrapper" *if="!isLoading || history.length > 0">
+    <div class="game-wrapper" *ngIf="!isLoading || history.length > 0">
         
         <div class="game-board">
             <h2>Tabuleiro <span class="badge">{{ history.length }} / {{ maxAttempts }}</span></h2>
             
-            <div *if="error" class="alert alert-danger">{{ error }}</div>
+            <div *ngIf="error" class="alert alert-danger">{{ error }}</div>
 
             <!-- Board History -->
             <div class="history-list">
@@ -32,13 +32,13 @@
                     </div>
                 </div>
 
-                <div class="empty-state" *if="history.length === 0">
+                <div class="empty-state" *ngIf="history.length === 0">
                     Nenhum palpite ainda. Sorteio de 4 cores secretas.
                 </div>
             </div>
 
             <!-- Current Guess Controls -->
-            <div class="controls-section" *if="!isGameOver">
+            <div class="controls-section" *ngIf="!isGameOver">
                 <hr>
                 <h3>Seu Palpite Atual:</h3>
                 
@@ -65,11 +65,11 @@
             </div>
 
             <!-- Game Over Status -->
-            <div class="game-over-section" *if="isGameOver">
+            <div class="game-over-section" *ngIf="isGameOver">
                 <hr>
                 <div class="result-banner" [ngClass]="isWinner ? 'winner' : 'loser'">
                     <h2>{{ isWinner ? 'VOCÊ VENCEU!' : 'FIM DE JOGO' }}</h2>
-                    <p *if="score !== null">Pontuação Final: {{ score }} pts</p>
+                    <p *ngIf="score !== null">Pontuação Final: {{ score }} pts</p>
                     
                     <div class="secret-reveal mt-3">
                         <p>A senha correta era:</p>
@@ -88,7 +88,7 @@
     </div>
 
     <!-- Global Loading Spinner -->
-    <div class="loading-overlay" *if="isLoading && history.length === 0">
+    <div class="loading-overlay" *ngIf="isLoading && history.length === 0">
         <div class="spinner"></div>
         <p>Carregando Tabuleiro...</p>
     </div>
