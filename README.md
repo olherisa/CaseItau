@@ -38,7 +38,7 @@ Se você possui o [Docker](https://docs.docker.com/get-docker/) instalado, basta
    ```
 3. Aguarde o download das imagens e a compilação paralela.
 4. Acesse os serviços:
-   - **Frontend (O Jogo):** [http://localhost:4200](http://localhost:4200)
+   - **Frontend (O Jogo):** [http://localhost:8080](http://localhost:8080)
    - **Backend API Docs:** [http://localhost:8000/docs](http://localhost:8000/docs)
 
 > 💡 *Para parar e remover os containers:* `docker-compose down`
@@ -90,7 +90,7 @@ CREATE DATABASE mastermind CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
    ```bash
    npm start
    ```
-  > 👉 Acesse [http://localhost:4200/](http://localhost:4200/) para ver a aplicação com os estilos prontos.
+  > 👉 Acesse [http://localhost:8080/](http://localhost:8080/) para ver a aplicação com os estilos prontos.
 
 ---
 

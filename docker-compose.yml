@@ -40,7 +40,7 @@ services:
     container_name: mastermind_frontend
     restart: always
     ports:
-      - "4200:80" # Mapeia a porta 80 do Nginx interno para 4200 no seu host
+      - "8080:80" # Mapeia a porta 80 do Nginx interno para 8080 no host
     depends_on:
       - backend
 
