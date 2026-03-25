@@ -30,7 +30,9 @@ def login(login_req: LoginRequest, response: Response, auth_service: AuthService
         secure=False
     )
     # Return user details without token
-    user = auth_service.user_repo.get_user_by_email(login_req.username_or_email) or auth_service.user_repo.get_user_by_username(login_req.username_or_email)
+    user = auth_service.user_repo.get_user_by_username(login_req.identifier)
+    if not user:
+        user = auth_service.user_repo.get_user_by_email(login_req.identifier)
     return {"message": "Login successful", "user_id": user.id, "username": user.username}
 
 @router.post("/logout")

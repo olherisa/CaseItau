@@ -24,13 +24,13 @@ class AuthService:
         return self.user_repo.create_user(user)
 
     def authenticate_user(self, login_req: LoginRequest) -> Token:
-        # Check if input is email or username
-        user = self.user_repo.get_user_by_email(login_req.username_or_email)
+        # Verify by email or username
+        user = self.user_repo.get_user_by_email(login_req.identifier)
         if not user:
-            user = self.user_repo.get_user_by_username(login_req.username_or_email)
-
+            user = self.user_repo.get_user_by_username(login_req.identifier)
+        
         if not user or not verify_password(login_req.password, user.password_hash):
-            raise BusinessException("Credenciais inválidas. Verifique seu usuário/email e senha.", status_code=401)
+            raise BusinessException("Credenciais inválidas. Verifique seu login e senha.", status_code=401)
 
         access_token = create_access_token(data={"sub": user.username, "user_id": user.id})
         return Token(access_token=access_token, token_type="bearer")

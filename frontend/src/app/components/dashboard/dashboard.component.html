@@ -15,13 +15,13 @@
                 adivinhar a sequência exata. Teste sua lógica e suba no ranking mundial!
             </p>
 
-            <div *if="error" class="alert alert-danger">
+            <div *ngIf="error" class="alert alert-danger">
                 {{ error }}
             </div>
 
             <div class="actions">
                 <button class="btn btn-primary btn-large" (click)="startNewGame()" [disabled]="isLoading">
-                    <span *if="isLoading" class="spinner-border spinner-border-sm mr-2"></span>
+                    <span *ngIf="isLoading" class="spinner-border spinner-border-sm mr-2"></span>
                     {{ isLoading ? 'Iniciando...' : 'NOVA PARTIDA' }}
                 </button>
 

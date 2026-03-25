@@ -9,6 +9,7 @@ import { LoginComponent } from './components/login/login.component';
 import { DashboardComponent } from './components/dashboard/dashboard.component';
 import { GameBoardComponent } from './components/game-board/game-board.component';
 import { RankingComponent } from './components/ranking/ranking.component';
+import { ToastComponent } from './components/toast/toast.component';
 
 import { JwtInterceptor } from './interceptors/jwt.interceptor';
 import { ErrorInterceptor } from './interceptors/error.interceptor';
@@ -19,7 +20,8 @@ import { ErrorInterceptor } from './interceptors/error.interceptor';
     LoginComponent,
     DashboardComponent,
     GameBoardComponent,
-    RankingComponent
+    RankingComponent,
+    ToastComponent
   ],
   imports: [
     BrowserModule,

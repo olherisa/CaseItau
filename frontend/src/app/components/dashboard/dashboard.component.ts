@@ -21,8 +21,8 @@ export class DashboardComponent implements OnInit {
 
   ngOnInit(): void {
       const user = this.authService.currentUserValue;
-      if (user && user.sub) {
-          this.username = user.sub;
+      if (user && user.username) {
+          this.username = user.username;
       }
   }
 

@@ -6,9 +6,11 @@ import { GameBoardComponent } from './components/game-board/game-board.component
 import { RankingComponent } from './components/ranking/ranking.component';
 import { AuthGuard } from './guards/auth.guard';
 
+import { GuestGuard } from './guards/guest.guard';
+
 const routes: Routes = [
   { path: '', redirectTo: '/login', pathMatch: 'full' },
-  { path: 'login', component: LoginComponent },
+  { path: 'login', component: LoginComponent, canActivate: [GuestGuard] },
   { path: 'dashboard', component: DashboardComponent, canActivate: [AuthGuard] },
   { path: 'game/:gameId', component: GameBoardComponent, canActivate: [AuthGuard] },
   { path: 'ranking', component: RankingComponent },

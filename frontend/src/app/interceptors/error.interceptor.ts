@@ -4,10 +4,11 @@ import { Observable, throwError } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 import { AuthService } from '../services/auth.service';
 import { Router } from '@angular/router';
+import { ToastService } from '../services/toast.service';
 
 @Injectable()
 export class ErrorInterceptor implements HttpInterceptor {
-  constructor(private authService: AuthService, private router: Router) {}
+  constructor(private authService: AuthService, private router: Router, private toastService: ToastService) {}
 
   intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
     return next.handle(request).pipe(catchError((err: HttpErrorResponse) => {
@@ -22,9 +23,10 @@ export class ErrorInterceptor implements HttpInterceptor {
           // standard backend business exception structure
           errorMsg = err.error.detail;
       } else {
-          errorMsg = err.message || err.statusText;
+          errorMsg = "Ocorreu um erro inesperado na comunicação com o servidor.";
       }
 
+      this.toastService.show(errorMsg, 'error');
       console.error('API Error:', err);
       return throwError(() => new Error(errorMsg));
     }));

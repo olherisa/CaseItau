@@ -28,7 +28,7 @@ class TokenData(BaseModel):
     user_id: Optional[int] = None
 
 class LoginRequest(BaseModel):
-    username_or_email: str
+    identifier: str
     password: str
 
 # --- Game Schemas ---

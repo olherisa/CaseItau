@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { AuthService } from '../../services/auth.service';
+import { ToastService } from '../../services/toast.service';
 
 @Component({
   selector: 'app-login',
@@ -12,15 +13,14 @@ export class LoginComponent implements OnInit {
   loginForm!: FormGroup;
   loading = false;
   submitted = false;
-  errorMessage = '';
   isRegistering = false;
 
   constructor(
     private formBuilder: FormBuilder,
     private router: Router,
-    private authService: AuthService
+    private authService: AuthService,
+    private toastService: ToastService
   ) {
-    // redirect to home if already logged in
     if (this.authService.isLoggedIn()) {
       this.router.navigate(['/dashboard']);
     }
@@ -32,7 +32,7 @@ export class LoginComponent implements OnInit {
 
   initForm() {
       this.loginForm = this.formBuilder.group({
-          username_or_email: ['', Validators.required],
+          identifier: ['', Validators.required],
           password: ['', [Validators.required, Validators.minLength(6)]]
       });
 
@@ -47,7 +47,6 @@ export class LoginComponent implements OnInit {
 
   toggleMode() {
       this.isRegistering = !this.isRegistering;
-      this.errorMessage = '';
       this.submitted = false;
       this.initForm();
   }
@@ -57,7 +56,6 @@ export class LoginComponent implements OnInit {
 
   onSubmit(): void {
     this.submitted = true;
-    this.errorMessage = '';
 
     // stop here if form is invalid
     if (this.loginForm.invalid) {
@@ -72,21 +70,20 @@ export class LoginComponent implements OnInit {
             next: () => {
                 this.loading = false;
                 this.toggleMode(); // switch back to login
-                this.errorMessage = 'Conta criada com sucesso! Você já pode fazer login.';
+                this.toastService.show('Conta criada com sucesso! Você já pode fazer login.', 'success');
             },
-            error: error => {
-                this.errorMessage = error.message;
+            error: () => {
                 this.loading = false;
             }
         });
     } else {
-        this.authService.login(this.f['username_or_email'].value, this.f['password'].value)
+        this.authService.login(this.f['identifier'].value, this.f['password'].value)
         .subscribe({
           next: () => {
+            this.toastService.show('Login realizado com sucesso!', 'success');
             this.router.navigate(['/dashboard']);
           },
-          error: error => {
-            this.errorMessage = error.message;
+          error: () => {
             this.loading = false;
           }
         });

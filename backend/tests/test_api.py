@@ -20,14 +20,14 @@ def test_login_user():
     # Login
     response = client.post(
         "/auth/login",
-        json={"username_or_email": "testuser2", "password": "password123"}
+        json={"identifier": "testuser2", "password": "password123"}
     )
     assert response.status_code == 200
     assert "access_token" in response.cookies
 
 def test_start_game():
     client.post("/auth/register", json={"username": "player1", "email": "player1@mail.com", "password": "pass"})
-    login_res = client.post("/auth/login", json={"username_or_email": "player1", "password": "pass"})
+    login_res = client.post("/auth/login", json={"identifier": "player1", "password": "pass"})
     token = login_res.cookies.get("access_token")
 
     res = client.post("/games/start", cookies={"access_token": token})
@@ -36,7 +36,7 @@ def test_start_game():
 
 def test_make_guess():
     client.post("/auth/register", json={"username": "player2", "email": "player2@mail.com", "password": "pass"})
-    token = client.post("/auth/login", json={"username_or_email": "player2", "password": "pass"}).cookies.get("access_token")
+    token = client.post("/auth/login", json={"identifier": "player2", "password": "pass"}).cookies.get("access_token")
     cookies = {"access_token": token}
     
     game = client.post("/games/start", cookies=cookies).json()
